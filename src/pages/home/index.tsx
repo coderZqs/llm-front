@@ -1,8 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Button, Input, Image, Modal } from "antd"
+import { Button, Input, Upload, Image, Modal, message, Tabs, Segmented } from "antd"
 import { getChatHistory, addChatHistory, getChatHistoryItem, addChatHistoryItem } from "../../network/api/chat"
 import jsCookie from "js-cookie";
 import { EventSourcePolyfill } from "event-source-polyfill";
+import ReactMarkdown from 'react-markdown'
+import { UploadOutlined } from '@ant-design/icons';
+import { Empty } from 'antd';
+import type { UploadProps } from 'antd';
 import "./chat.scss"
 
 const HeaderComp = (prop) => {
@@ -15,16 +19,59 @@ const HeaderComp = (prop) => {
 
 
 const SliderComp = (prop) => {
+  const props: UploadProps = {
+    name: 'file',
+    action: 'http://localhost:3000/chain/upload',
+    headers: {
+      authorization: 'bearer ' + jsCookie.get("authorization"),
+    },
+    onChange(info) {
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
+
+
   return (
-    <div>
+    <div className="h-full flex flex-col overflow-hidden">
       {/* <div className="my-4 mx-4"><Button type="primary" block>开启新对话</Button></div>
       <div className="border-b border-gray-200 my-4"></div> */}
-      <div>
-        {
+      <div className="my-4 mx-4 flex items-center justify-between">
+        <div>
+          知识库管理
+        </div>
+
+        <Upload {...props}>
+          <Button type="primary">创建</Button>
+        </Upload>
+      </div>
+      <div className="border-b border-gray-200 my-4"></div>
+      <div className="mx-4 flex-1">
+        {/*         {
           prop.chatHistory.map((item, index) => (
             <div className={"rounded-sm py-2 text-xs mx-2 mt-2 px-2 cursor-pointer " + (prop.chatIndex === index ? "bg-gray-200" : "")} key={item.id} onClick={() => prop.changeChat(item, index)}>{item.title}</div>
           ))
-        }
+        } */}
+        <div>
+          <Segmented<string>
+            options={['全部', '文档', '问答', '表格', '网页']}
+            onChange={(value) => {
+              console.log(value); // string
+            }}
+
+            className="file-category"
+          />
+
+          <div className="mt-59">
+            <Empty></Empty>
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -45,8 +92,8 @@ const ChatComp = (prop) => {
     <div className="flex-1 p-4 overflow-y-auto scroll-bar-style">
       {prop.chatList.map((chat) => (
         <div key={chat.id} className={chat.type == 1 ? "flex mb-4 justify-start text-sm" : "flex justify-end mb-4 text-sm"} >
-          <div className={chat.type == 1 ? '' : 'user-chat'}>
-            {chat.content}
+          <div className={[chat.type == 1 ? 'ai-chat' : 'user-chat', 'markdown-body'].join(" ")}>
+            <ReactMarkdown children={chat.content}></ReactMarkdown>
           </div>
         </div>
       ))}
@@ -59,9 +106,11 @@ const ChatComp = (prop) => {
 const InputComp = ({ onChange, value, onSend, isLoading }) => {
 
   const handleKeyDown = (event) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      onSend()
+    if (value) {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        onSend()
+      }
     }
   }
 
@@ -85,6 +134,7 @@ const HomePage = () => {
   useEffect(() => {
     const getChat = async () => {
       const chatHistory = await chatHistoryRequest()
+      console.log(chatHistory)
       const id = chatHistory[chatIndex].id;
 
       const data = await getChatHistoryItem({ chat_history_id: id })
@@ -181,11 +231,11 @@ const HomePage = () => {
     }
    */
   return (
-    <div className="h-screen flex flex-col m-auto overflow-hidden">
-      <HeaderComp title={title} />
+    <div className="h-screen flex flex-col m-auto overflow-hidden" style={{ background: '#f3f5fa' }}>
+      {/* <HeaderComp title={title} /> */}
 
       <div className="flex flex-1 overflow-hidden">
-        <div className="w-[250px] border-r border-gray-200">
+        <div className="w-[500px] border-r border-gray-200 h-full">
           <SliderComp chatHistory={chatHistory} chatIndex={chatIndex} changeChat={changeChat}></SliderComp>
         </div>
         <div className="h-full w-full">

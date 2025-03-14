@@ -25,3 +25,132 @@
     border-radius: 2em;
   }
 }
+
+.file-category {
+  width: 100%;
+
+  label {
+    width: 20%;
+  }
+}
+
+.ant-upload-list {
+  display: none;
+}
+
+.ai-chat {
+  border-radius: 12px;
+  padding: 20px;
+  background: white;
+}
+
+.markdown-body {
+  /* Markdown自定义样式 */
+  body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+
+  h1 {
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 5px;
+  }
+
+  h2 {
+    color: #34495e;
+    border-left: 4px solid #3498db;
+    padding-left: 10px;
+  }
+
+  h3 {
+    margin: 12px 0;
+    color: #2c3e50;
+  }
+
+  h4 {
+    color: #34495e;
+  }
+
+  blockquote {
+    background-color: #f8f9fa;
+    border-left: 4px solid #3498db;
+    padding: 10px 20px;
+    margin: 15px 0;
+    font-style: italic;
+  }
+
+  ul,
+  ol {
+    margin-bottom: 15px;
+  }
+
+  ul li {
+    margin-left: 20px;
+    margin-bottom: 5px;
+    list-style-type: square;
+  }
+
+  ol li {
+    margin-bottom: 5px;
+  }
+
+  a {
+    color: #3498db;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 15px auto;
+    border: 1px solid #ddd;
+    padding: 5px;
+    border-radius: 4px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+  }
+
+  table th,
+  table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  table th {
+    background-color: #f8f9fa;
+  }
+
+  code {
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 2px 5px;
+    font-family: monospace;
+    color: #34495e;
+  }
+
+  pre {
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 10px;
+    overflow-x: auto;
+    font-family: monospace;
+    color: #34495e;
+    margin: 4px 0;
+  }
+}

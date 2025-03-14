@@ -46,3 +46,10 @@ export const getChatHistoryItem = (params) => {
     params,
   });
 };
+
+export const refreshToken = () => {
+  return http({
+    method: "get",
+    url: "/auth/refresh-token",
+  });
+};
